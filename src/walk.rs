@@ -12,12 +12,13 @@ pub fn walk(config: &Config, counts: &mut Counts, dir: &str, prefix: &str) -> io
     let mut paths: Vec<_> = fs::read_dir(dir)?
         .map(|entry| entry.unwrap().path())
         .filter(|path| {
-            if !path.is_dir() {
-                return true;
+            if !path.is_dir() && config.display_only_dirs {
+                return false;
             }
 
             if let Some(name) = path.file_name().and_then(|s| s.to_str()) {
-                    return (config.display_all || !name.starts_with(".")) && !config.ignored_dirs.iter().any(|ignored| ignored == name);
+                    return (config.display_hidden || !name.starts_with(".") ) 
+                    && !config.ignored_dirs.iter().any(|ignored| ignored == name);
             }
             
             true
@@ -39,8 +40,14 @@ pub fn walk(config: &Config, counts: &mut Counts, dir: &str, prefix: &str) -> io
             counts.files += 1;
         }
 
+        let displayed = if config.display_level>0 {&format!("{}/{}", dir, name)} else {name};
+
         if paths_length == 0 {
-            println!("{}└── {}", prefix, name);
+            if config.display_indentation {
+                println!("{}└── {}", prefix, displayed);
+            } else {
+                println!("{displayed}");
+            }
             if path.is_dir() {
                 walk(
                     config, 
@@ -50,7 +57,11 @@ pub fn walk(config: &Config, counts: &mut Counts, dir: &str, prefix: &str) -> io
                 )?;
             }
         } else {
-            println!("{}├── {}", prefix, name);
+            if config.display_indentation {
+                println!("{}├── {}", prefix, displayed);
+            } else {
+                println!("{displayed}");
+            }
             if path.is_dir() {
                 walk(
                     config, 
