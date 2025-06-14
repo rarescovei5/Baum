@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 colored = "3"
+humansize = "2.1.3"

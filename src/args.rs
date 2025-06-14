@@ -11,6 +11,7 @@ pub struct Config {
     pub display_only_dirs: bool,
     pub display_level: u8,
     pub display_indentation: bool,
+    pub display_bytes: bool,
     pub ignored_dirs: Vec<String>
 }
 
@@ -26,6 +27,7 @@ pub fn parse() -> (String, Config) {
     let mut display_level: u8 = 0;
     let mut display_indentation: bool = true;
     let mut display_only_dirs: bool = false;
+    let mut display_bytes: bool = false;
 
     for arg in args {
         if arg.starts_with("-") {
@@ -39,18 +41,21 @@ pub fn parse() -> (String, Config) {
                 "-h" | "-hidden" => {
                     display_hidden = true;
                 },
+                // Hides prefix
+                "-p" | "-prefix" => {
+                    display_indentation = false;
+                },
                 // Ignores the mentioned folders that come after it
-                "-I" | "-ignore" => {
+                "-i" | "-ignore" => {
                     current_context = ContextScope::IgnoredDirs;
+                },
+                "-b" | "-bytes" => {
+                    display_bytes =  true;
                 },
                 // Displays only directories
                 "-d" | "-directories" => {
                     display_only_dirs = true;
                 },
-                // Hides indentation
-                "-i" | "-indentation" => {
-                    display_indentation = false;
-                }
                 // display_level=0 - Shows only names when printing 
                 // display_level=1 - Shows relative paths
                 // display_level=2 - Shows absolute paths
@@ -84,5 +89,12 @@ pub fn parse() -> (String, Config) {
         }
     }   
 
-   (dir, Config { display_hidden, display_only_dirs, display_level, display_indentation, ignored_dirs })
+   (dir, Config { 
+        display_hidden, 
+        display_only_dirs, 
+        display_level, 
+        display_indentation, 
+        display_bytes, 
+        ignored_dirs 
+    })
 }
