@@ -69,7 +69,7 @@ pub fn parse() -> (String, Config) {
                 }
                 "--v" | "--version" => {
                     // Version info and early exit
-                    println!("Version 1.0.0 - baum");
+                    println!("Version 0.1.0 - baum");
                     std::process::exit(0);
                 },
                 "-h" | "-hidden" => display_hidden = true,
@@ -147,14 +147,14 @@ fn print_help() {
 
     // Options
     println!("{}","Options:".yellow().bold());
+    println!("  {}           {}","--h, --help".green(), "Show this help message and exit".white());
     println!("  {}          {}","-v, -version".green(), "Print version and exit".white());
+    println!("  {}      {}","-d, -directories".green(), "Only show directories, hide files".white());
     println!("  {}           {}","-h, -hidden".green(), "Show hidden files (names starting with '.')".white());
     println!("  {}           {}","-p, -prefix".green(), "Disable tree indentation prefixes".white());
-    println!("  {} {}     {}","-i, -ignore","<dir>".blue(), "Ignore the specified directory name (can repeat)".white());
     println!("  {}            {}","-b, -bytes".green(), "Display size suffix for each entry".white());
-    println!("  {}      {}","-d, -directories".green(), "Only show directories, hide files".white());
+    println!("  {} {}     {}","-i, -ignore","<dir>".blue(), "Ignore the specified directory name (can repeat)".white());
     println!("  {} {}    {}","-l, -level","[0|1|2]".blue(), "Set path display level (0=names, 1=relative, 2=absolute)".white());
-    println!("  {}           {}","--h, --help".green(), "Show this help message and exit".white());
     println!();
 
     // Examples
