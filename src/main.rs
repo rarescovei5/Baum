@@ -1,34 +1,32 @@
 mod args;
 mod walk;
 
+use std::path::PathBuf;
 use humansize::DECIMAL;
-use walk::{Counts,walk};
+use walk::{Counts, walk};
 
 fn main() {
-    let (dir, config) = args::parse();
-    let mut counts = Counts {files: 0, dirs: 0, bytes: 0};
+    let (dir_str, config) = args::parse();
+    let mut counts = Counts { files: 0, dirs: 0, bytes: 0 };
 
-    let dir: String = if dir.as_str() == "." && config.display_level == 2 {
-        let res = std::env::current_dir()
-            .unwrap()
-            .to_string_lossy()
-            .to_string()
-            .replace('\\', "/");
-        println!("{}", &res);
-        res
+    // Convert parsed String into a PathBuf
+    let dir_path = if dir_str.as_str() == "." && config.display_level == 2 {
+        let cwd = std::env::current_dir().unwrap();
+        println!("{}", cwd.display());
+        cwd
     } else {
-        println!("{}", &dir);
-        dir
-        .replace('\\', "/")
+        println!("{}", dir_str);
+        PathBuf::from(dir_str)
     };
 
-    
-    let _ = walk(&config, &mut counts, &dir, "");
+    // Start walking
+    let _ = walk(&config, &mut counts, &dir_path, "");
 
+    // Final summary
     let bytes = if config.display_bytes {
-        &format!(" - {}", humansize::format_size(counts.bytes, DECIMAL))
+        format!(" - {}", humansize::format_size(counts.bytes, DECIMAL))
     } else {
-        ""
+        String::new()
     };
 
     println!("\n{} files, {} directories{}", counts.files, counts.dirs, bytes);
