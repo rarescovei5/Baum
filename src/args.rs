@@ -69,7 +69,7 @@ pub fn parse() -> (String, Config) {
                 }
                 "--v" | "--version" => {
                     // Version info and early exit
-                    println!("Version 0.1.0 - baum");
+                    println!("Version 0.1.1 - baum");
                     std::process::exit(0);
                 },
                 "-h" | "-hidden" => display_hidden = true,
