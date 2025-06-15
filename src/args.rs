@@ -148,7 +148,7 @@ fn print_help() {
     // Options
     println!("{}","Options:".yellow().bold());
     println!("  {}           {}","--h, --help".green(), "Show this help message and exit".white());
-    println!("  {}          {}","-v, -version".green(), "Print version and exit".white());
+    println!("  {}        {}","--v, --version".green(), "Print version and exit".white());
     println!("  {}      {}","-d, -directories".green(), "Only show directories, hide files".white());
     println!("  {}           {}","-h, -hidden".green(), "Show hidden files (names starting with '.')".white());
     println!("  {}           {}","-p, -prefix".green(), "Disable tree indentation prefixes".white());

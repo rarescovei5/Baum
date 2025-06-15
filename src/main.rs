@@ -2,6 +2,7 @@ mod args;
 mod walk;
 
 use std::path::PathBuf;
+use colored::{Colorize, Color};
 use humansize::DECIMAL;
 use walk::{Counts, walk};
 
@@ -24,10 +25,18 @@ fn main() {
 
     // Final summary
     let bytes = if config.display_bytes {
-        format!(" - {}", humansize::format_size(counts.bytes, DECIMAL))
+        humansize::format_size(counts.bytes, DECIMAL)
     } else {
         String::new()
     };
 
-    println!("\n{} files, {} directories{}", counts.files, counts.dirs, bytes);
+
+    let summary = format!(
+        "{}, {} | {}",
+        &format!("{} directories", counts.dirs).color(Color::BrightBlue),
+        &format!("{} files", counts.files).color(Color::BrightWhite),
+        &format!("{}", bytes).color(Color::BrightMagenta)
+    );
+
+    println!("\n{summary}");
 }
